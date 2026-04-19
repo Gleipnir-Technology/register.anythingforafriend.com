@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anything for a Friend 5K - Choose Your Team</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #FFD1ED;
+            --secondary-color: #580C28;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .progress-dot.active {
+            background-color: white;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .team-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+            height: 100%;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .team-card.selected {
+            border-color: var(--secondary-color);
+            box-shadow: 0 10px 30px rgba(88, 12, 40, 0.3);
+        }
+        
+        .team-color-badge {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        
+        .avatar-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #f8f9fa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .registrant-count {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .new-beneficiary-section {
+            background-color: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .new-beneficiary-section:hover {
+            border-color: var(--secondary-color);
+            background-color: #fff;
+        }
+        
+        .color-picker-wrapper {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: #333;
+        }
+        
+        .color-option.selected {
+            border-color: #000;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #000;
+        }
+        
+        .color-option input[type="color"] {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .btn-nav {
+            padding: 12px 40px;
+            font-weight: bold;
+            border-radius: 30px;
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            color: white;
+        }
+        
+        .btn-next:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .check-icon {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            color: var(--secondary-color);
+            display: none;
+        }
+        
+        .team-card.selected .check-icon {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <img src="static/images/afaf-logo.png" alt="AFAF Logo" class="mb-3">
+                    <h2 class="mb-3">Step 1: Choose Your Team</h2>
+                    <p class="lead mb-4">Select the beneficiary you'd like to support. Your registration fee and donations will go directly to help them.</p>
+                    
+                    <!-- Progress Indicator -->
+                    <div class="progress-step">
+                        <div class="progress-dot active"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        
+        <!-- Existing Teams -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3 class="mb-4 text-center">Select a Beneficiary</h3>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5" id="teamSelection">
+            
+            <!-- Team 1 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-card shadow-sm" data-team="team1">
+                    <div class="card-body p-4 position-relative">
+                        <i class="bi bi-check-circle-fill check-icon"></i>
+                        <div class="team-color-badge" style="background-color: #FF6B6B;"></div>
+                        
+                        <div class="text-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop" 
+                                 alt="Sarah Johnson" 
+                                 class="avatar-img mb-3">
+                            <h5 class="card-title fw-bold mb-2">Sarah Johnson</h5>
+                            <p class="text-muted small mb-3">Medical expenses for cancer treatment</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">Team Color</small>
+                                <strong style="color: #FF6B6B;">Sunset Red</strong>
+                            </div>
+                            <div class="registrant-count">
+                                <i class="bi bi-people-fill me-1"></i>47
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 2 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-card shadow-sm" data-team="team2">
+                    <div class="card-body p-4 position-relative">
+                        <i class="bi bi-check-circle-fill check-icon"></i>
+                        <div class="team-color-badge" style="background-color: #4ECDC4;"></div>
+                        
+                        <div class="text-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop" 
+                                 alt="Michael Chen" 
+                                 class="avatar-img mb-3">
+                            <h5 class="card-title fw-bold mb-2">Michael Chen</h5>
+                            <p class="text-muted small mb-3">Recovery support after accident</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">Team Color</small>
+                                <strong style="color: #4ECDC4;">Ocean Teal</strong>
+                            </div>
+                            <div class="registrant-count">
+                                <i class="bi bi-people-fill me-1"></i>32
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 3 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-card shadow-sm" data-team="team3">
+                    <div class="card-body p-4 position-relative">
+                        <i class="bi bi-check-circle-fill check-icon"></i>
+                        <div class="team-color-badge" style="background-color: #FFD93D;"></div>
+                        
+                        <div class="text-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop" 
+                                 alt="Emma Rodriguez" 
+                                 class="avatar-img mb-3">
+                            <h5 class="card-title fw-bold mb-2">Emma Rodriguez</h5>
+                            <p class="text-muted small mb-3">Support for family during hardship</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">Team Color</small>
+                                <strong style="color: #e6c435;">Sunshine Yellow</strong>
+                            </div>
+                            <div class="registrant-count">
+                                <i class="bi bi-people-fill me-1"></i>56
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 4 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-card shadow-sm" data-team="team4">
+                    <div class="card-body p-4 position-relative">
+                        <i class="bi bi-check-circle-fill check-icon"></i>
+                        <div class="team-color-badge" style="background-color: #A8E6CF;"></div>
+                        
+                        <div class="text-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop" 
+                                 alt="David Thompson" 
+                                 class="avatar-img mb-3">
+                            <h5 class="card-title fw-bold mb-2">David Thompson</h5>
+                            <p class="text-muted small mb-3">Rehabilitation after injury</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">Team Color</small>
+                                <strong style="color: #78d4a8;">Mint Green</strong>
+                            </div>
+                            <div class="registrant-count">
+                                <i class="bi bi-people-fill me-1"></i>41
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 5 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-card shadow-sm" data-team="team5">
+                    <div class="card-body p-4 position-relative">
+                        <i class="bi bi-check-circle-fill check-icon"></i>
+                        <div class="team-color-badge" style="background-color: #B39DDB;"></div>
+                        
+                        <div class="text-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop" 
+                                 alt="Lisa Patel" 
+                                 class="avatar-img mb-3">
+                            <h5 class="card-title fw-bold mb-2">Lisa Patel</h5>
+                            <p class="text-muted small mb-3">Educational fund for children</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">Team Color</small>
+                                <strong style="color: #9575cd;">Lavender Purple</strong>
+                            </div>
+                            <div class="registrant-count">
+                                <i class="bi bi-people-fill me-1"></i>38
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 6 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-card shadow-sm" data-team="team6">
+                    <div class="card-body p-4 position-relative">
+                        <i class="bi bi-check-circle-fill check-icon"></i>
+                        <div class="team-color-badge" style="background-color: #FF8C94;"></div>
+                        
+                        <div class="text-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop" 
+                                 alt="James Wilson" 
+                                 class="avatar-img mb-3">
+                            <h5 class="card-title fw-bold mb-2">James Wilson</h5>
+                            <p class="text-muted small mb-3">Home modifications for accessibility</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">Team Color</small>
+                                <strong style="color: #ff6b75;">Coral Pink</strong>
+                            </div>
+                            <div class="registrant-count">
+                                <i class="bi bi-people-fill me-1"></i>29
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Divider -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <hr class="my-4">
+                <p class="text-center text-muted">
+                    <i class="bi bi-stars me-2"></i>Or create a new beneficiary
+                </p>
+            </div>
+        </div>
+
+        <!-- New Beneficiary Section -->
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="new-beneficiary-section" id="newBeneficiarySection">
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="radio" name="teamSelection" id="newBeneficiaryRadio" value="new">
+                        <label class="form-check-label fw-bold fs-5" for="newBeneficiaryRadio">
+                            <i class="bi bi-plus-circle me-2"></i>Add a New Beneficiary
+                        </label>
+                    </div>
+                    
+                    <div id="newBeneficiaryForm" style="display: none;">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="beneficiaryName" class="form-label fw-bold">Beneficiary Name *</label>
+                                <input type="text" class="form-control" id="beneficiaryName" placeholder="Enter full name" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="teamColorName" class="form-label fw-bold">Team Color Name *</label>
+                                <input type="text" class="form-control" id="teamColorName" placeholder="e.g., Royal Blue" required>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="beneficiaryReason" class="form-label fw-bold">Reason for Support *</label>
+                                <textarea class="form-control" id="beneficiaryReason" rows="3" placeholder="Brief description of why you're raising funds" required></textarea>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label class="form-label fw-bold d-block mb-3">Choose Team Color *</label>
+                                <div class="color-picker-wrapper">
+                                    <div class="color-option" style="background-color: #FF6B6B;" data-color="#FF6B6B" title="Red"></div>
+                                    <div class="color-option" style="background-color: #4ECDC4;" data-color="#4ECDC4" title="Teal"></div>
+                                    <div class="color-option" style="background-color: #45B7D1;" data-color="#45B7D1" title="Blue"></div>
+                                    <div class="color-option" style="background-color: #96CEB4;" data-color="#96CEB4" title="Green"></div>
+                                    <div class="color-option" style="background-color: #FFEAA7;" data-color="#FFEAA7" title="Yellow"></div>
+                                    <div class="color-option" style="background-color: #DFE6E9;" data-color="#DFE6E9" title="Gray"></div>
+                                    <div class="color-option" style="background-color: #A29BFE;" data-color="#A29BFE" title="Purple"></div>
+                                    <div class="color-option" style="background-color: #FD79A8;" data-color="#FD79A8" title="Pink"></div>
+                                    <div class="color-option" style="background-color: #FDCB6E;" data-color="#FDCB6E" title="Orange"></div>
+                                    <div class="color-option position-relative" style="background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4);" title="Custom color">
+                                        <input type="color" id="customColor" class="position-absolute top-0 start-0 w-100 h-100 cursor-pointer" style="opacity: 0; cursor: pointer;">
+                                        <i class="bi bi-palette-fill position-absolute top-50 start-50 translate-middle" style="pointer-events: none;"></i>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="selectedColor" value="">
+                                <small class="text-muted d-block mt-2">Click the rainbow circle to choose a custom color</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="teamLeadName" class="form-label fw-bold">Team Lead Name *</label>
+                                <input type="text" class="form-control" id="teamLeadName" placeholder="Enter full name" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="teamLeadPhone" class="form-label fw-bold">Team Lead Phone*</label>
+                                <input type="text" class="form-control" id="teamLeadPhone" placeholder="801-555-1234" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="teamLeadEmail" class="form-label fw-bold">Team Lead Email *</label>
+                                <input type="text" class="form-control" id="teamLeadEmail" placeholder="lead@aol.com" required>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="index.html" class="btn btn-outline-secondary btn-nav">
+                        <i class="bi bi-arrow-left me-2"></i>Back
+                    </a>
+                    <a class="btn btn-next btn-nav" href="register.html" id="nextButton" disabled>
+                        Continue<i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center text-muted">
+                    <p class="mb-0">&copy; 2026 Anything for a Friend 5K. All rights reserved.</p>
+                    <p class="small mb-0">Questions? Email us at <a href="mailto:info@afaf5k.org">info@afaf5k.org</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Team card selection
+        document.querySelectorAll('.team-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selection from all cards
+                document.querySelectorAll('.team-card').forEach(c => c.classList.remove('selected'));
+                
+                // Add selection to clicked card
+                this.classList.add('selected');
+                
+                // Uncheck new beneficiary radio
+                document.getElementById('newBeneficiaryRadio').checked = false;
+                document.getElementById('newBeneficiaryForm').style.display = 'none';
+                
+                // Enable next button
+                document.getElementById('nextButton').disabled = false;
+            });
+        });
+
+        // New beneficiary radio
+        document.getElementById('newBeneficiaryRadio').addEventListener('change', function() {
+            if (this.checked) {
+                // Show form
+                document.getElementById('newBeneficiaryForm').style.display = 'block';
+                
+                // Remove selection from all team cards
+                document.querySelectorAll('.team-card').forEach(c => c.classList.remove('selected'));
+                
+                // Enable next button
+                document.getElementById('nextButton').disabled = false;
+            }
+        });
+
+        // Color picker functionality
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selection from all color options
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                
+                // Add selection to clicked option
+                this.classList.add('selected');
+                
+                // Store selected color
+                const color = this.dataset.color;
+                if (color) {
+                    document.getElementById('selectedColor').value = color;
+                }
+            });
+        });
+
+        // Custom color picker
+        document.getElementById('customColor').addEventListener('input', function() {
+            const customOption = this.closest('.color-option');
+            customOption.style.background = this.value;
+            customOption.dataset.color = this.value;
+            
+            // Select this option
+            document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+            customOption.classList.add('selected');
+            document.getElementById('selectedColor').value = this.value;
+        });
+
+        // Form validation for new beneficiary
+        const requiredFields = ['beneficiaryName', 'teamColorName', 'beneficiaryReason'];
+        requiredFields.forEach(fieldId => {
+            document.getElementById(fieldId)?.addEventListener('input', validateNewBeneficiaryForm);
+        });
+
+        function validateNewBeneficiaryForm() {
+            const newBeneficiaryRadio = document.getElementById('newBeneficiaryRadio');
+            if (!newBeneficiaryRadio.checked) return;
+
+            const allFilled = requiredFields.every(fieldId => {
+                const field = document.getElementById(fieldId);
+                return field && field.value.trim() !== '';
+            });
+
+            const colorSelected = document.getElementById('selectedColor').value !== '';
+
+            document.getElementById('nextButton').disabled = !(allFilled && colorSelected);
+        }
+
+        // Re-validate when color is selected
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', validateNewBeneficiaryForm);
+        });
+    </script>
+    
+</body>
+</html>
