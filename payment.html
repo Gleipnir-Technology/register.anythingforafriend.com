@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anything for a Friend 5K - Payment</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #FFD1ED;
+            --secondary-color: #580C28;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background-color: white;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .progress-dot.completed {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .vendor-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .team-summary-card {
+            background: linear-gradient(135deg, rgba(255, 209, 237, 0.2) 0%, rgba(88, 12, 40, 0.1) 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .team-color-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .avatar-small {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .order-summary {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .summary-line:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-total {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            padding-top: 15px;
+            border-top: 2px solid var(--secondary-color);
+        }
+        
+        .payment-form {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(88, 12, 40, 0.15);
+        }
+        
+        .card-type-icons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card-icon.active {
+            opacity: 1;
+        }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-nav {
+            padding: 12px 40px;
+            font-weight: bold;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            color: white;
+        }
+        
+        .btn-next:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-next:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .required-asterisk {
+            color: #dc3545;
+        }
+        
+        .cvv-help {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .additional-donation {
+            background: linear-gradient(135deg, rgba(255, 209, 237, 0.3) 0%, rgba(88, 12, 40, 0.15) 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .donation-button {
+            border: 2px solid var(--secondary-color);
+            background: white;
+            color: var(--secondary-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .donation-button:hover, .donation-button.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        @media (max-width: 991px) {
+            .order-summary {
+                position: static;
+                margin-bottom: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .payment-form {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <img src="static/images/afaf-logo.png" alt="AFAF Logo" class="mb-3">
+                    <h2 class="mb-3">Step 3: Payment</h2>
+                    <p class="lead mb-4">Complete your registration with a secure payment.</p>
+                    
+                    <!-- Progress Indicator -->
+                    <div class="progress-step">
+                        <div class="progress-dot completed"></div>
+                        <div class="progress-dot completed"></div>
+                        <div class="progress-dot active"></div>
+                        <div class="progress-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        
+        <div class="row">
+            <div class="col-12">
+                
+                <!-- Vendor Notice -->
+                <div class="vendor-notice">
+                    <div class="d-flex gap-3">
+                        <div>
+                            <i class="bi bi-exclamation-triangle-fill fs-3" style="color: #ffc107;"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-2">
+                                <i class="bi bi-palette me-2"></i>Mockup Notice
+                            </h5>
+                            <p class="mb-0">
+                                <strong>This is a design mockup.</strong> The final payment page will be provided by our secure payment vendor 
+                                (such as Stripe, Square, or PayPal) and will have their own styling and security features. 
+                                The look and feel may differ from what is shown here, but will maintain a professional and secure checkout experience.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Summary -->
+                <div class="team-summary-card">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop" 
+                                 alt="Sarah Johnson" 
+                                 class="avatar-small">
+                            <div>
+                                <h5 class="mb-1 fw-bold">You're Supporting:</h5>
+                                <p class="mb-0 text-muted">Sarah Johnson - Medical expenses for cancer treatment</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="text-end d-none d-sm-block">
+                                <small class="text-muted d-block">Team Color</small>
+                                <strong style="color: #FF6B6B;">Sunset Red</strong>
+                            </div>
+                            <div class="team-color-indicator" style="background-color: #FF6B6B;"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <!-- Payment Form -->
+            <div class="col-lg-7">
+                <div class="payment-form">
+                    <div class="mb-4">
+                        <h3 class="fw-bold mb-2">
+                            <i class="bi bi-credit-card me-2" style="color: var(--secondary-color);"></i>
+                            Payment Information
+                        </h3>
+                        <p class="text-muted">All fields marked with <span class="required-asterisk">*</span> are required.</p>
+                    </div>
+
+                    <form id="paymentForm" novalidate>
+                        
+                        <!-- Card Number -->
+                        <div class="mb-4">
+                            <label for="cardNumber" class="form-label">
+                                Card Number <span class="required-asterisk">*</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="cardNumber" 
+                                       placeholder="1234 5678 9012 3456"
+                                       maxlength="19"
+                                       required>
+                                <span class="input-group-text bg-white">
+                                    <div class="card-type-icons">
+                                        <i class="bi bi-credit-card-fill card-icon" id="cardIconGeneric"></i>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a valid card number.
+                            </div>
+                        </div>
+
+                        <!-- Cardholder Name -->
+                        <div class="mb-4">
+                            <label for="cardholderName" class="form-label">
+                                Cardholder Name <span class="required-asterisk">*</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="cardholderName" 
+                                   placeholder="Name as it appears on card"
+                                   required>
+                            <div class="invalid-feedback">
+                                Please enter the cardholder name.
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Expiration Date -->
+                            <div class="col-md-4 mb-4">
+                                <label for="expirationDate" class="form-label">
+                                    Expiration <span class="required-asterisk">*</span>
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="expirationDate" 
+                                       placeholder="MM/YY"
+                                       maxlength="5"
+                                       required>
+                                <div class="invalid-feedback">
+                                    Invalid date.
+                                </div>
+                            </div>
+
+                            <!-- CVV -->
+                            <div class="col-md-4 mb-4">
+                                <label for="cvv" class="form-label">
+                                    CVV <span class="required-asterisk">*</span>
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="cvv" 
+                                       placeholder="123"
+                                       maxlength="4"
+                                       required>
+                                <div class="invalid-feedback">
+                                    Required.
+                                </div>
+                            </div>
+
+                            <!-- Billing Zip -->
+                            <div class="col-md-4 mb-4">
+                                <label for="billingZip" class="form-label">
+                                    Billing ZIP <span class="required-asterisk">*</span>
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="billingZip" 
+                                       placeholder="12345"
+                                       maxlength="5"
+                                       required>
+                                <div class="invalid-feedback">
+                                    Required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CVV Help -->
+                        <div class="cvv-help mb-4">
+                            <div class="d-flex align-items-start gap-2">
+                                <i class="bi bi-info-circle-fill" style="color: var(--secondary-color);"></i>
+                                <div>
+                                    <strong>What is CVV?</strong>
+                                    <p class="mb-0 small">The CVV is the 3-digit security code on the back of your card (4 digits on the front for American Express).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Badge -->
+                        <div class="security-badge">
+                            <i class="bi bi-shield-lock-fill fs-3" style="color: #4caf50;"></i>
+                            <div>
+                                <strong style="color: #2e7d32;">Secure Payment</strong>
+                                <p class="mb-0 small text-muted">Your payment information is encrypted and secure. We never store your full card details.</p>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-5">
+                <div class="order-summary">
+                    <h4 class="fw-bold mb-4">
+                        <i class="bi bi-receipt me-2" style="color: var(--secondary-color);"></i>
+                        Order Summary
+                    </h4>
+
+                    <div class="summary-line">
+                        <span>Registration Fee</span>
+                        <strong>$35.00</strong>
+                    </div>
+
+                    <div class="summary-line">
+                        <div>
+                            <div>Processing Fee</div>
+                            <small class="text-muted">Covers transaction costs</small>
+                        </div>
+                        <strong>$2.50</strong>
+                    </div>
+
+                    <!-- Additional Donation Section -->
+                    <div class="additional-donation">
+                        <h6 class="fw-bold mb-3">
+                            <i class="bi bi-heart-fill me-2" style="color: var(--secondary-color);"></i>
+                            Add an Additional Donation?
+                        </h6>
+                        <p class="small text-muted mb-3">100% goes directly to Sarah Johnson</p>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <button type="button" class="donation-button" data-amount="10">+$10</button>
+                            <button type="button" class="donation-button" data-amount="25">+$25</button>
+                            <button type="button" class="donation-button" data-amount="50">+$50</button>
+                            <button type="button" class="donation-button" data-amount="100">+$100</button>
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">$</span>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="customDonation" 
+                                   placeholder="Custom amount"
+                                   min="0"
+                                   step="1">
+                        </div>
+                    </div>
+
+                    <div class="summary-line" id="donationLine" style="display: none;">
+                        <div>
+                            <div>Additional Donation</div>
+                            <small class="text-muted">Thank you for your generosity!</small>
+                        </div>
+                        <strong id="donationAmount">$0.00</strong>
+                    </div>
+
+                    <div class="summary-line summary-total">
+                        <span>Total</span>
+                        <span id="totalAmount">$37.50</span>
+                    </div>
+
+                    <div class="mt-4">
+                        <h6 class="fw-bold mb-3">What's Included:</h6>
+                        <ul class="small mb-0">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Team Color T-Shirt</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Race Bib & Timing Chip</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Finisher Medal</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Post-Race Refreshments</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tax Deductible Notice -->
+                    <div class="alert alert-info mt-3 mb-0" role="alert">
+                        <small>
+                            <i class="bi bi-info-circle-fill me-1"></i>
+                            <strong>Tax Deductible:</strong> Your registration fee and donations may be tax-deductible. You'll receive a receipt via email.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="step2-your-info.html" class="btn btn-outline-secondary btn-nav">
+                        <i class="bi bi-arrow-left me-2"></i>Back
+                    </a>
+                    <a class="btn btn-next btn-nav" href="complete.html" id="nextButton" disabled>
+                        Complete Registration<i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center text-muted">
+                    <p class="mb-0">&copy; 2026 Anything for a Friend 5K. All rights reserved.</p>
+                    <p class="small mb-0">Questions? Email us at <a href="mailto:info@afaf5k.org">info@afaf5k.org</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Form elements
+        const form = document.getElementById('paymentForm');
+        const cardNumberInput = document.getElementById('cardNumber');
+        const cardholderNameInput = document.getElementById('cardholderName');
+        const expirationInput = document.getElementById('expirationDate');
+        const cvvInput = document.getElementById('cvv');
+        const billingZipInput = document.getElementById('billingZip');
+        const nextButton = document.getElementById('nextButton');
+        const customDonationInput = document.getElementById('customDonation');
+        const donationButtons = document.querySelectorAll('.donation-button');
+
+        // Pricing
+        const baseRegistration = 35.00;
+        const processingFee = 2.50;
+        let additionalDonation = 0;
+
+        // Card number formatting
+        cardNumberInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+            validateForm();
+        });
+
+        // Expiration date formatting
+        expirationInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+            validateForm();
+        });
+
+        // CVV - numbers only
+        cvvInput.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+            validateForm();
+        });
+
+        // Billing ZIP - numbers only
+        billingZipInput.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+            validateForm();
+        });
+
+        // Cardholder name validation
+        cardholderNameInput.addEventListener('input', validateForm);
+
+        // Donation buttons
+        donationButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                donationButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Set donation amount
+                additionalDonation = parseFloat(this.dataset.amount);
+                
+                // Clear custom donation input
+                customDonationInput.value = '';
+                
+                // Update total
+                updateTotal();
+            });
+        });
+
+        // Custom donation input
+        customDonationInput.addEventListener('input', function() {
+            // Remove active class from all buttons
+            donationButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Set donation amount
+            const value = parseFloat(this.value) || 0;
+            additionalDonation = Math.max(0, value);
+            
+            // Update total
+            updateTotal();
+        });
+
+        // Update total display
+        function updateTotal() {
+            const total = baseRegistration + processingFee + additionalDonation;
+            document.getElementById('totalAmount').textContent = '$' + total.toFixed(2);
+            
+            // Show/hide donation line
+            const donationLine = document.getElementById('donationLine');
+            if (additionalDonation > 0) {
+                donationLine.style.display = 'flex';
+                document.getElementById('donationAmount').textContent = '$' + additionalDonation.toFixed(2);
+            } else {
+                donationLine.style.display = 'none';
+            }
+        }
+
+        // Validation functions
+        function isValidCardNumber(cardNumber) {
+            const cleaned = cardNumber.replace(/\s/g, '');
+            return cleaned.length >= 13 && cleaned.length <= 19 && /^\d+$/.test(cleaned);
+        }
+
+        function isValidExpiration(expiration) {
+            const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+            if (!regex.test(expiration)) return false;
+            
+            const [month, year] = expiration.split('/');
+            const expDate = new Date(2000 + parseInt(year), parseInt(month) - 1);
+            const today = new Date();
+            return expDate > today;
+        }
+
+        function isValidCVV(cvv) {
+            return cvv.length === 3 || cvv.length === 4;
+        }
+
+        function isValidZip(zip) {
+            return zip.length === 5;
+        }
+
+        function isValidName(name) {
+            return name.trim().length >= 2;
+        }
+
+        // Form validation
+        function validateForm() {
+            const isCardNumberValid = isValidCardNumber(cardNumberInput.value);
+            const isCardholderNameValid = isValidName(cardholderNameInput.value);
+            const isExpirationValid = isValidExpiration(expirationInput.value);
+            const isCVVValid = isValidCVV(cvvInput.value);
+            const isZipValid = isValidZip(billingZipInput.value);
+
+            // Update validation classes
+            updateValidationClass(cardNumberInput, isCardNumberValid);
+            updateValidationClass(cardholderNameInput, isCardholderNameValid);
+            updateValidationClass(expirationInput, isExpirationValid);
+            updateValidationClass(cvvInput, isCVVValid);
+            updateValidationClass(billingZipInput, isZipValid);
+
+            // Enable/disable next button
+            nextButton.disabled = !(isCardNumberValid && isCardholderNameValid && 
+                                    isExpirationValid && isCVVValid && isZipValid);
+        }
+
+        function updateValidationClass(element, isValid) {
+            if (element.value.trim() === '') {
+                element.classList.remove('is-valid', 'is-invalid');
+            } else if (isValid) {
+                element.classList.remove('is-invalid');
+                element.classList.add('is-valid');
+            } else {
+                element.classList.remove('is-valid');
+                element.classList.add('is-invalid');
+            }
+        }
+
+        // Next button click
+        nextButton.addEventListener('click', function() {
+            if (!nextButton.disabled) {
+                // Show loading state
+                nextButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+                nextButton.disabled = true;
+                
+                // Simulate payment processing
+                setTimeout(function() {
+                    window.location.href = 'step4-confirmation.html';
+                }, 2000);
+            }
+        });
+
+        // Prevent form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anything for a Friend 5K - Registration Complete!</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #FFD1ED;
+            --secondary-color: #580C28;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 40px;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.completed {
+            background-color: white;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        .success-icon i {
+            font-size: 50px;
+            color: #28a745;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .confirmation-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 30px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-top: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .info-card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .info-card-icon i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .team-celebration-card {
+            background: linear-gradient(135deg, rgba(255, 209, 237, 0.3) 0%, rgba(88, 12, 40, 0.15) 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .team-color-badge-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin: 0 auto 20px;
+        }
+        
+        .avatar-medium {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin: 0 auto 20px;
+        }
+        
+        .calendar-button {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .calendar-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            color: white;
+        }
+        
+        .event-detail {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .event-detail-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .next-steps-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: step-counter;
+        }
+        
+        .next-steps-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 25px;
+        }
+        
+        .next-steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .social-share {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .social-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .social-button:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+        
+        .social-button.facebook {
+            background: #1877f2;
+        }
+        
+        .social-button.twitter {
+            background: #1da1f2;
+        }
+        
+        .social-button.email {
+            background: #ea4335;
+        }
+        
+        .social-button.link {
+            background: #6c757d;
+        }
+        
+        .receipt-notice {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .confirmation-number {
+                font-size: 1.5rem;
+                padding: 12px 20px;
+            }
+            
+            .info-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <img src="static/images/afaf-logo.png" alt="AFAF Logo" class="mb-3">
+                    
+                    <!-- Success Icon -->
+                    <div class="success-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    
+                    <h1 class="display-4 fw-bold mb-3">You're Registered!</h1>
+                    <p class="lead fs-4 mb-3">Thank you for joining us and supporting an amazing cause.</p>
+                    
+                    <div class="confirmation-number">
+                        <small style="font-size: 0.5em; letter-spacing: normal;">Confirmation #</small><br>
+                        AFAF-2026-1847
+                    </div>
+                    
+                    <!-- Progress Indicator - All Complete -->
+                    <div class="progress-step mt-4">
+                        <div class="progress-dot completed"></div>
+                        <div class="progress-dot completed"></div>
+                        <div class="progress-dot completed"></div>
+                        <div class="progress-dot completed"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        
+        <!-- Receipt Notice -->
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="receipt-notice">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="bi bi-envelope-check-fill fs-3" style="color: #4caf50;"></i>
+                        <div>
+                            <h5 class="fw-bold mb-2">
+                                <i class="bi bi-check-circle-fill me-2" style="color: #4caf50;"></i>
+                                Receipt Sent
+                            </h5>
+                            <p class="mb-0">
+                                A confirmation email with your receipt has been sent to <strong>your.email@example.com</strong>. 
+                                Please check your inbox (and spam folder, just in case) for your race details and registration information.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Celebration -->
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="team-celebration-card">
+                    <h3 class="fw-bold mb-3">🎉 You're on Team Sarah Johnson! 🎉</h3>
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop" 
+                         alt="Sarah Johnson" 
+                         class="avatar-medium">
+                    <div class="team-color-badge-large" style="background-color: #FF6B6B;"></div>
+                    <h5 class="mb-2">Your Team Color: <strong style="color: #FF6B6B;">Sunset Red</strong></h5>
+                    <p class="text-muted mb-0">Your t-shirt will be waiting for you at packet pickup. Wear it with pride on race day!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Details -->
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="info-card">
+                    <h3 class="fw-bold mb-4">
+                        <i class="bi bi-calendar-event me-2" style="color: var(--secondary-color);"></i>
+                        Mark Your Calendar
+                    </h3>
+                    
+                    <div class="event-detail">
+                        <div class="event-detail-icon">
+                            <i class="bi bi-calendar3"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Date</small>
+                            <strong class="fs-5">Saturday, June 15, 2026</strong>
+                        </div>
+                    </div>
+
+                    <div class="event-detail">
+                        <div class="event-detail-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Race Start Time</small>
+                            <strong class="fs-5">8:00 AM</strong>
+                            <p class="mb-0 small text-muted">Check-in opens at 7:00 AM</p>
+                        </div>
+                    </div>
+
+                    <div class="event-detail">
+                        <div class="event-detail-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Location</small>
+                            <strong class="fs-5">City Park</strong>
+                            <p class="mb-0 small text-muted">123 Park Avenue, Main Entrance</p>
+                            <a href="https://maps.google.com" target="_blank" class="small">
+                                <i class="bi bi-map me-1"></i>Get Directions
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="#" class="calendar-button">
+                            <i class="bi bi-calendar-plus"></i>
+                            Add to Calendar
+                        </a>
+                        <p class="text-muted small mt-3 mb-0">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Compatible with Google Calendar, Apple Calendar, Outlook, and more
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="bi bi-list-check"></i>
+                    </div>
+                    <h3 class="fw-bold mb-4">What Happens Next?</h3>
+                    
+                    <ul class="next-steps-list">
+                        <li>
+                            <strong class="d-block mb-2">Check Your Email</strong>
+                            <p class="text-muted mb-0">You'll receive a confirmation with your race bib number and important race day information.</p>
+                        </li>
+                        <li>
+                            <strong class="d-block mb-2">Packet Pickup</strong>
+                            <p class="text-muted mb-0">Pick up your race bib, t-shirt, and goodie bag on June 14th (5-8 PM) or June 15th (7-7:45 AM) at City Park.</p>
+                        </li>
+                        <li>
+                            <strong class="d-block mb-2">Race Day Reminders</strong>
+                            <p class="text-muted mb-0">We'll send you reminder emails and texts (if opted in) with parking info, weather updates, and race day tips.</p>
+                        </li>
+                        <li>
+                            <strong class="d-block mb-2">Run for a Cause!</strong>
+                            <p class="text-muted mb-0">Show up ready to run, have fun, and make a difference in Sarah's life!</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share Section -->
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="info-card text-center">
+                    <div class="info-card-icon mx-auto">
+                        <i class="bi bi-share"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Spread the Word!</h3>
+                    <p class="text-muted mb-4">Help us reach our fundraising goal by inviting your friends and family to register.</p>
+                    
+                    <div class="social-share">
+                        <a href="#" class="social-button facebook" title="Share on Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-button twitter" title="Share on Twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="mailto:?subject=Join me at the Anything for a Friend 5K!&body=I just registered for the AFAF 5K to support Sarah Johnson. Join me!" class="social-button email" title="Share via Email">
+                            <i class="bi bi-envelope"></i>
+                        </a>
+                        <a href="#" class="social-button link" title="Copy Link" id="copyLinkBtn">
+                            <i class="bi bi-link-45deg"></i>
+                        </a>
+                    </div>
+                    
+                    <p class="text-muted small mt-3 mb-0">
+                        Share your confirmation number and team color with friends to run together!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="info-card h-100">
+                            <h5 class="fw-bold mb-3">
+                                <i class="bi bi-question-circle me-2" style="color: var(--secondary-color);"></i>
+                                Have Questions?
+                            </h5>
+                            <p class="text-muted mb-3">We're here to help! Check out our FAQ or contact us directly.</p>
+                            <a href="mailto:info@afaf5k.org" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-envelope me-2"></i>Email Us
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-card h-100">
+                            <h5 class="fw-bold mb-3">
+                                <i class="bi bi-people me-2" style="color: var(--secondary-color);"></i>
+                                Join Our Community
+                            </h5>
+                            <p class="text-muted mb-3">Follow us on social media for training tips, updates, and race day excitement!</p>
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-sm" style="background: #1877f2; color: white;">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm" style="background: #e4405f; color: white;">
+                                    <i class="bi bi-instagram"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm" style="background: #1da1f2; color: white;">
+                                    <i class="bi bi-twitter"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <a href="index.html" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-house me-2"></i>Return to Homepage
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center text-muted">
+                    <p class="mb-0">&copy; 2026 Anything for a Friend 5K. All rights reserved.</p>
+                    <p class="small mb-0">Questions? Email us at <a href="mailto:info@afaf5k.org">info@afaf5k.org</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Copy link functionality
+        document.getElementById('copyLinkBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // In a real application, this would copy the actual registration URL
+            const registrationUrl = window.location.origin + '/register';
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(registrationUrl).then(function() {
+                // Show feedback
+                const originalIcon = e.currentTarget.querySelector('i');
+                originalIcon.className = 'bi bi-check2';
+                
+                // Create tooltip or alert
+                const toast = document.createElement('div');
+                toast.className = 'position-fixed bottom-0 end-0 p-3';
+                toast.style.zIndex = '9999';
+                toast.innerHTML = `
+                    <div class="toast show" role="alert">
+                        <div class="toast-header">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong class="me-auto">Link Copied!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                        </div>
+                        <div class="toast-body">
+                            Registration link copied to clipboard
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                
+                // Reset icon after 2 seconds
+                setTimeout(function() {
+                    originalIcon.className = 'bi bi-link-45deg';
+                }, 2000);
+                
+                // Remove toast after 3 seconds
+                setTimeout(function() {
+                    toast.remove();
+                }, 3000);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        });
+
+        // Add to Calendar functionality
+        document.querySelector('.calendar-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Calendar event details
+            const eventDetails = {
+                title: 'Anything for a Friend 5K',
+                description: 'Annual charity 5K run supporting Sarah Johnson. Check-in opens at 7:00 AM.',
+                location: 'City Park, 123 Park Avenue, Main Entrance',
+                start: '2026-06-15T08:00:00',
+                end: '2026-06-15T11:00:00'
+            };
+            
+            // Create .ics file content
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Anything for a Friend 5K//EN
+BEGIN:VEVENT
+UID:${Date.now()}@afaf5k.org
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTSTART:${eventDetails.start.replace(/[-:]/g, '')}
+DTEND:${eventDetails.end.replace(/[-:]/g, '')}
+SUMMARY:${eventDetails.title}
+DESCRIPTION:${eventDetails.description}
+LOCATION:${eventDetails.location}
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Reminder: Anything for a Friend 5K tomorrow!
+END:VALARM
+END:VEVENT
+END:VCALENDAR`;
+            
+            // Create and download .ics file
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'AFAF-5K-2026.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success message
+            const button = e.currentTarget;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="bi bi-check-circle-fill"></i> Added to Calendar!';
+            button.style.background = '#28a745';
+            
+            setTimeout(function() {
+                button.innerHTML = originalText;
+                button.style.background = '';
+            }, 3000);
+        });
+    </script>
+    
+</body>
+</html>

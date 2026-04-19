@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anything for a Friend 5K - Your Information</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #FFD1ED;
+            --secondary-color: #580C28;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background-color: white;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .progress-dot.completed {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .team-summary-card {
+            background: linear-gradient(135deg, rgba(255, 209, 237, 0.2) 0%, rgba(88, 12, 40, 0.1) 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .team-color-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .avatar-small {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(88, 12, 40, 0.15);
+        }
+        
+        .form-control.is-valid {
+            border-color: #28a745;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(.375em + .1875rem) center;
+            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+            padding-right: calc(1.5em + .75rem);
+        }
+        
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(.375em + .1875rem) center;
+            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+            padding-right: calc(1.5em + .75rem);
+        }
+        
+        .invalid-feedback, .valid-feedback {
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
+        
+        .form-switch .form-check-input {
+            width: 3em;
+            height: 1.5em;
+            cursor: pointer;
+        }
+        
+        .form-switch .form-check-input:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .form-switch .form-check-input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(88, 12, 40, 0.15);
+        }
+        
+        .text-messaging-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .text-messaging-info.show {
+            display: block;
+        }
+        
+        .btn-nav {
+            padding: 12px 40px;
+            font-weight: bold;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            color: white;
+        }
+        
+        .btn-next:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-next:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .required-asterisk {
+            color: #dc3545;
+        }
+        
+        .info-icon {
+            color: var(--secondary-color);
+            cursor: help;
+        }
+        
+        @media (max-width: 768px) {
+            .form-section {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <img src="static/images/afaf-logo.png" alt="AFAF Logo" class="mb-3">
+                    <h2 class="mb-3">Step 2: Your Information</h2>
+                    <p class="lead mb-4">Tell us a bit about yourself so we can send you race details and updates.</p>
+                    
+                    <!-- Progress Indicator -->
+                    <div class="progress-step">
+                        <div class="progress-dot completed"></div>
+                        <div class="progress-dot active"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                
+                <!-- Team Summary -->
+                <div class="team-summary-card">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop" 
+                                 alt="Sarah Johnson" 
+                                 class="avatar-small">
+                            <div>
+                                <h5 class="mb-1 fw-bold">You're Supporting:</h5>
+                                <p class="mb-0 text-muted">Sarah Johnson - Medical expenses for cancer treatment</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="text-end d-none d-sm-block">
+                                <small class="text-muted d-block">Team Color</small>
+                                <strong style="color: #FF6B6B;">Sunset Red</strong>
+                            </div>
+                            <div class="team-color-indicator" style="background-color: #FF6B6B;"></div>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-sm-none text-center">
+                        <small class="text-muted d-block">Team Color</small>
+                        <strong style="color: #FF6B6B;">Sunset Red</strong>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="form-section">
+                    <div class="mb-4">
+                        <h3 class="fw-bold mb-2">
+                            <i class="bi bi-person-badge me-2" style="color: var(--secondary-color);"></i>
+                            Contact Information
+                        </h3>
+                        <p class="text-muted">All fields marked with <span class="required-asterisk">*</span> are required.</p>
+                    </div>
+
+                    <form id="registrationForm" novalidate>
+                        
+                        <!-- Full Name -->
+                        <div class="mb-4">
+                            <label for="fullName" class="form-label">
+                                Full Name <span class="required-asterisk">*</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="fullName" 
+                                   placeholder="Enter your first and last name"
+                                   required>
+                            <div class="invalid-feedback">
+                                Please enter your full name.
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="mb-4">
+                            <label for="email" class="form-label">
+                                Email Address <span class="required-asterisk">*</span>
+                                <i class="bi bi-info-circle info-icon ms-1" 
+                                   data-bs-toggle="tooltip" 
+                                   data-bs-placement="top" 
+                                   title="We'll send your race confirmation and bib number to this email"></i>
+                            </label>
+                            <input type="email" 
+                                   class="form-control" 
+                                   id="email" 
+                                   placeholder="your.email@example.com"
+                                   required>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="mb-4">
+                            <label for="phoneNumber" class="form-label">
+                                Phone Number <span class="required-asterisk">*</span>
+                                <i class="bi bi-info-circle info-icon ms-1" 
+                                   data-bs-toggle="tooltip" 
+                                   data-bs-placement="top" 
+                                   title="We'll use this to contact you about race day updates"></i>
+                            </label>
+                            <input type="tel" 
+                                   class="form-control" 
+                                   id="phoneNumber" 
+                                   placeholder="(555) 123-4567"
+                                   required>
+                            <div class="invalid-feedback">
+                                Please enter a valid phone number.
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+
+                        <!-- Text Messages Toggle -->
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" 
+                                       type="checkbox" 
+                                       role="switch" 
+                                       id="canReceiveTexts">
+                                <label class="form-check-label" for="canReceiveTexts">
+                                    <strong>This phone number can receive text messages</strong>
+                                </label>
+                            </div>
+                            <div class="text-messaging-info" id="textMessagingInfo">
+                                <div class="d-flex gap-2">
+                                    <i class="bi bi-chat-dots-fill" style="color: var(--secondary-color);"></i>
+                                    <div>
+                                        <strong class="d-block mb-1">You'll receive text updates about:</strong>
+                                        <ul class="mb-0 ps-3 small">
+                                            <li>Race day reminders and weather updates</li>
+                                            <li>Parking and check-in information</li>
+                                            <li>Real-time race day announcements</li>
+                                        </ul>
+                                        <p class="mb-0 mt-2 small text-muted">
+                                            <i class="bi bi-shield-check me-1"></i>
+                                            Standard message rates may apply. You can opt-out at any time.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact (Optional) -->
+                        <div class="mt-5 mb-4">
+                            <h4 class="fw-bold mb-3">
+                                <i class="bi bi-heart-pulse me-2" style="color: var(--secondary-color);"></i>
+                                Emergency Contact
+                                <span class="badge bg-secondary ms-2">Optional</span>
+                            </h4>
+                            <p class="text-muted small">While optional, we recommend providing emergency contact information for safety purposes.</p>
+                        </div>
+
+                        <!-- Emergency Contact Name -->
+                        <div class="mb-4">
+                            <label for="emergencyName" class="form-label">
+                                Emergency Contact Name
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="emergencyName" 
+                                   placeholder="Enter contact's full name">
+                        </div>
+
+                        <!-- Emergency Contact Phone -->
+                        <div class="mb-4">
+                            <label for="emergencyPhone" class="form-label">
+                                Emergency Contact Phone
+                            </label>
+                            <input type="tel" 
+                                   class="form-control" 
+                                   id="emergencyPhone" 
+                                   placeholder="(555) 123-4567">
+                        </div>
+
+                        <!-- Emergency Contact Relationship -->
+                        <div class="mb-4">
+                            <label for="emergencyRelationship" class="form-label">
+                                Relationship
+                            </label>
+                            <select class="form-select" id="emergencyRelationship">
+                                <option value="" selected>Select relationship...</option>
+                                <option value="spouse">Spouse/Partner</option>
+                                <option value="parent">Parent</option>
+                                <option value="child">Child</option>
+                                <option value="sibling">Sibling</option>
+                                <option value="friend">Friend</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a href="step1-choose-team.html" class="btn btn-outline-secondary btn-nav">
+                        <i class="bi bi-arrow-left me-2"></i>Back
+                    </a>
+                    <a class="btn btn-next btn-nav" href="payment.html" id="nextButton" disabled>
+                        Continue<i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center text-muted">
+                    <p class="mb-0">&copy; 2026 Anything for a Friend 5K. All rights reserved.</p>
+                    <p class="small mb-0">Questions? Email us at <a href="mailto:info@afaf5k.org">info@afaf5k.org</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Form elements
+        const form = document.getElementById('registrationForm');
+        const fullNameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phoneNumber');
+        const canReceiveTexts = document.getElementById('canReceiveTexts');
+        const textMessagingInfo = document.getElementById('textMessagingInfo');
+        const nextButton = document.getElementById('nextButton');
+
+        // Show/hide text messaging info
+        canReceiveTexts.addEventListener('change', function() {
+            if (this.checked) {
+                textMessagingInfo.classList.add('show');
+            } else {
+                textMessagingInfo.classList.remove('show');
+            }
+        });
+
+        // Phone number formatting
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = `(${value}`;
+                } else if (value.length <= 6) {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                } else {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                }
+            }
+            e.target.value = value;
+        });
+
+        // Emergency phone formatting
+        const emergencyPhone = document.getElementById('emergencyPhone');
+        emergencyPhone.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = `(${value}`;
+                } else if (value.length <= 6) {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                } else {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                }
+            }
+            e.target.value = value;
+        });
+
+        // Email validation
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Phone validation
+        function isValidPhone(phone) {
+            const digits = phone.replace(/\D/g, '');
+            return digits.length === 10;
+        }
+
+        // Name validation
+        function isValidName(name) {
+            return name.trim().length >= 2 && name.trim().split(' ').length >= 2;
+        }
+
+        // Real-time validation
+        fullNameInput.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.classList.remove('is-valid', 'is-invalid');
+            } else if (isValidName(this.value)) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+                this.nextElementSibling.textContent = 'Please enter your first and last name.';
+            }
+            validateForm();
+        });
+
+        emailInput.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.classList.remove('is-valid', 'is-invalid');
+            } else if (isValidEmail(this.value)) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            }
+            validateForm();
+        });
+
+        phoneInput.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.classList.remove('is-valid', 'is-invalid');
+            } else if (isValidPhone(this.value)) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            }
+            validateForm();
+        });
+
+        // Enable/disable next button based on form validation
+        function validateForm() {
+            const isNameValid = isValidName(fullNameInput.value);
+            const isEmailValid = isValidEmail(emailInput.value);
+            const isPhoneValid = isValidPhone(phoneInput.value);
+
+            nextButton.disabled = !(isNameValid && isEmailValid && isPhoneValid);
+        }
+
+        // Validate on input for immediate feedback
+        fullNameInput.addEventListener('input', validateForm);
+        emailInput.addEventListener('input', validateForm);
+        phoneInput.addEventListener('input', validateForm);
+
+        // Next button click
+        nextButton.addEventListener('click', function() {
+            if (!nextButton.disabled) {
+                // In a real application, this would save the data and navigate to the next page
+                window.location.href = 'step3-payment.html';
+            }
+        });
+
+        // Prevent form submission on enter
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+        });
+    </script>
+    
+</body>
+</html>
