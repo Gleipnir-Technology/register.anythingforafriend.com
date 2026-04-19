@@ -152,6 +152,54 @@
             display: block;
         }
         
+        .child-registration-item {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .child-registration-item .remove-child-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        
+        .btn-add-child {
+            border: 2px dashed var(--secondary-color);
+            color: var(--secondary-color);
+            background: white;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add-child:hover {
+            background: var(--primary-color);
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .waiver-request-section {
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .payment-waiver-textarea {
+            display: none;
+            margin-top: 15px;
+        }
+        
+        .payment-waiver-textarea.show {
+            display: block;
+        }
+        
         .btn-nav {
             padding: 12px 40px;
             font-weight: bold;
@@ -398,7 +446,91 @@
                             </select>
                         </div>
 
+                        <!-- T-Shirt Size -->
+                        <div class="mt-5 mb-4">
+                            <h4 class="fw-bold mb-3">
+                                <i class="bi bi-award me-2" style="color: var(--secondary-color);"></i>
+                                Race Gear
+                            </h4>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="tshirtSize" class="form-label">
+                                T-Shirt Size <span class="required-asterisk">*</span>
+                                <i class="bi bi-info-circle info-icon ms-1" 
+                                   data-bs-toggle="tooltip" 
+                                   data-bs-placement="top" 
+                                   title="All participants receive a commemorative race t-shirt"></i>
+                            </label>
+                            <select class="form-select" id="tshirtSize" required>
+                                <option value="" selected>Select size...</option>
+                                <option value="youth-s">Youth Small</option>
+                                <option value="youth-m">Youth Medium</option>
+                                <option value="youth-l">Youth Large</option>
+                                <option value="xs">Adult XS</option>
+                                <option value="s">Adult Small</option>
+                                <option value="m">Adult Medium</option>
+                                <option value="l">Adult Large</option>
+                                <option value="xl">Adult XL</option>
+                                <option value="2xl">Adult 2XL</option>
+                                <option value="3xl">Adult 3XL</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a t-shirt size.
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+
+                        <!-- Child Registrations -->
+                        <div class="mt-5 mb-4">
+                            <h4 class="fw-bold mb-3">
+                                <i class="bi bi-people me-2" style="color: var(--secondary-color);"></i>
+                                Child Registrations
+                                <span class="badge bg-secondary ms-2">Optional</span>
+                            </h4>
+                            <p class="text-muted small">Register your children to run with you! Children 12 and under are free.</p>
+                        </div>
+
+                        <div id="childRegistrationsContainer">
+                            <!-- Child registration items will be added here dynamically -->
+                        </div>
+
+                        <div class="mb-4">
+                            <button type="button" class="btn btn-add-child" id="addChildBtn">
+                                <i class="bi bi-plus-circle me-2"></i>Add Child Registration
+                            </button>
+                        </div>
+
                     </form>
+                </div>
+
+                <!-- Payment Waiver Request -->
+                <div class="waiver-request-section">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold mb-2">Need Financial Assistance?</h6>
+                            <p class="small mb-2">We don't want cost to be a barrier to participation. If you need to register without payment, please let us know.</p>
+                            <button type="button" class="btn btn-sm btn-outline-dark" id="requestWaiverBtn">
+                                Request Registration Without Payment
+                            </button>
+                            <div class="payment-waiver-textarea" id="waiverTextarea">
+                                <label for="waiverReason" class="form-label small fw-bold mt-3">
+                                    Please briefly explain your situation:
+                                </label>
+                                <textarea class="form-control" 
+                                          id="waiverReason" 
+                                          rows="4" 
+                                          placeholder="Your information will be kept confidential..."></textarea>
+                                <small class="text-muted d-block mt-2">
+                                    <i class="bi bi-lock-fill me-1"></i>
+                                    This information is confidential and will only be reviewed by event coordinators.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Navigation Buttons -->
@@ -443,9 +575,16 @@
         const fullNameInput = document.getElementById('fullName');
         const emailInput = document.getElementById('email');
         const phoneInput = document.getElementById('phoneNumber');
+        const tshirtSize = document.getElementById('tshirtSize');
         const canReceiveTexts = document.getElementById('canReceiveTexts');
         const textMessagingInfo = document.getElementById('textMessagingInfo');
         const nextButton = document.getElementById('nextButton');
+        const addChildBtn = document.getElementById('addChildBtn');
+        const childRegistrationsContainer = document.getElementById('childRegistrationsContainer');
+        const requestWaiverBtn = document.getElementById('requestWaiverBtn');
+        const waiverTextarea = document.getElementById('waiverTextarea');
+
+        let childCount = 0;
 
         // Show/hide text messaging info
         canReceiveTexts.addEventListener('change', function() {
@@ -456,6 +595,101 @@
             }
         });
 
+        // Show/hide payment waiver textarea
+        requestWaiverBtn.addEventListener('click', function() {
+            if (waiverTextarea.classList.contains('show')) {
+                waiverTextarea.classList.remove('show');
+                this.textContent = 'Request Registration Without Payment';
+                this.innerHTML = '<i class="bi bi-plus-circle me-1"></i>Request Registration Without Payment';
+            } else {
+                waiverTextarea.classList.add('show');
+                this.textContent = 'Cancel Request';
+                this.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancel Request';
+            }
+        });
+
+        // Add child registration
+        addChildBtn.addEventListener('click', function() {
+            childCount++;
+            const childDiv = document.createElement('div');
+            childDiv.className = 'child-registration-item';
+            childDiv.setAttribute('data-child-id', childCount);
+            childDiv.innerHTML = `
+                <button type="button" class="btn btn-sm btn-outline-danger remove-child-btn" onclick="removeChild(${childCount})">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+                <h6 class="fw-bold mb-3">
+                    <i class="bi bi-person-plus me-2"></i>Child ${childCount}
+                </h6>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="childName${childCount}" class="form-label">
+                            Child's Full Name <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="text" 
+                               class="form-control child-name-input" 
+                               id="childName${childCount}" 
+                               placeholder="Enter child's name"
+                               required>
+                        <div class="invalid-feedback">
+                            Please enter the child's name.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="childTshirt${childCount}" class="form-label">
+                            T-Shirt Size <span class="required-asterisk">*</span>
+                        </label>
+                        <select class="form-select child-tshirt-input" id="childTshirt${childCount}" required>
+                            <option value="" selected>Select size...</option>
+                            <option value="youth-s">Youth Small</option>
+                            <option value="youth-m">Youth Medium</option>
+                            <option value="youth-l">Youth Large</option>
+                            <option value="xs">Adult XS</option>
+                            <option value="s">Adult Small</option>
+                            <option value="m">Adult Medium</option>
+                            <option value="l">Adult Large</option>
+                            <option value="xl">Adult XL</option>
+                            <option value="2xl">Adult 2XL</option>
+                            <option value="3xl">Adult 3XL</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a t-shirt size.
+                        </div>
+                    </div>
+                </div>
+            `;
+            childRegistrationsContainer.appendChild(childDiv);
+            
+            // Add event listeners for validation
+            const childNameInput = childDiv.querySelector('.child-name-input');
+            const childTshirtInput = childDiv.querySelector('.child-tshirt-input');
+            
+            childNameInput.addEventListener('blur', validateChildField);
+            childNameInput.addEventListener('input', validateForm);
+            childTshirtInput.addEventListener('change', validateChildField);
+            childTshirtInput.addEventListener('change', validateForm);
+        });
+
+        // Remove child registration
+        window.removeChild = function(childId) {
+            const childDiv = document.querySelector(`[data-child-id="${childId}"]`);
+            if (childDiv) {
+                childDiv.remove();
+                validateForm();
+            }
+        };
+
+        // Validate child fields
+        function validateChildField(e) {
+            const field = e.target;
+            if (field.value.trim() === '') {
+                field.classList.remove('is-valid', 'is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+            }
+        }
+
         // Phone number formatting
         phoneInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
@@ -463,15 +697,14 @@
                 if (value.length <= 3) {
                     value = `(${value}`;
                 } else if (value.length <= 6) {
-                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                    value = `($${value.slice(0, 3)}) $${value.slice(3)}`;
                 } else {
-                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                    value = `($${value.slice(0, 3)}) $${value.slice(3, 6)}-${value.slice(6, 10)}`;
                 }
             }
             e.target.value = value;
         });
-
-        // Emergency phone formatting
+// Emergency phone formatting
         const emergencyPhone = document.getElementById('emergencyPhone');
         emergencyPhone.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
@@ -502,6 +735,28 @@
         // Name validation
         function isValidName(name) {
             return name.trim().length >= 2 && name.trim().split(' ').length >= 2;
+        }
+
+        // T-shirt size validation
+        function isValidTshirtSize(size) {
+            return size.trim() !== '';
+        }
+
+        // Validate all child registrations
+        function validateChildRegistrations() {
+            const childItems = document.querySelectorAll('.child-registration-item');
+            let allValid = true;
+
+            childItems.forEach(item => {
+                const nameInput = item.querySelector('.child-name-input');
+                const tshirtInput = item.querySelector('.child-tshirt-input');
+
+                if (nameInput.value.trim() === '' || tshirtInput.value.trim() === '') {
+                    allValid = false;
+                }
+            });
+
+            return allValid;
         }
 
         // Real-time validation
@@ -545,13 +800,34 @@
             validateForm();
         });
 
+        tshirtSize.addEventListener('change', function() {
+            if (this.value.trim() === '') {
+                this.classList.remove('is-valid', 'is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+            validateForm();
+        });
+
         // Enable/disable next button based on form validation
         function validateForm() {
             const isNameValid = isValidName(fullNameInput.value);
             const isEmailValid = isValidEmail(emailInput.value);
             const isPhoneValid = isValidPhone(phoneInput.value);
+            const isTshirtValid = isValidTshirtSize(tshirtSize.value);
+            const areChildrenValid = validateChildRegistrations();
 
-            nextButton.disabled = !(isNameValid && isEmailValid && isPhoneValid);
+            // Check if there are any child registrations
+            const hasChildren = document.querySelectorAll('.child-registration-item').length > 0;
+
+            // Enable button if all required fields are valid
+            // If there are children, their fields must also be valid
+            if (hasChildren) {
+                nextButton.disabled = !(isNameValid && isEmailValid && isPhoneValid && isTshirtValid && areChildrenValid);
+            } else {
+                nextButton.disabled = !(isNameValid && isEmailValid && isPhoneValid && isTshirtValid);
+            }
         }
 
         // Validate on input for immediate feedback
@@ -560,9 +836,50 @@
         phoneInput.addEventListener('input', validateForm);
 
         // Next button click
-        nextButton.addEventListener('click', function() {
+        nextButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            
             if (!nextButton.disabled) {
-                // In a real application, this would save the data and navigate to the next page
+                // Collect form data
+                const formData = {
+                    fullName: fullNameInput.value,
+                    email: emailInput.value,
+                    phone: phoneInput.value,
+                    canReceiveTexts: canReceiveTexts.checked,
+                    emergencyContact: {
+                        name: document.getElementById('emergencyName').value,
+                        phone: emergencyPhone.value,
+                        relationship: document.getElementById('emergencyRelationship').value
+                    },
+                    tshirtSize: tshirtSize.value,
+                    children: [],
+                    paymentWaiver: {
+                        requested: waiverTextarea.classList.contains('show'),
+                        reason: document.getElementById('waiverReason').value
+                    }
+                };
+
+                // Collect child registration data
+                const childItems = document.querySelectorAll('.child-registration-item');
+                childItems.forEach((item, index) => {
+                    const childId = item.getAttribute('data-child-id');
+                    const childName = document.getElementById(`childName${childId}`).value;
+                    const childTshirt = document.getElementById(`childTshirt${childId}`).value;
+                    
+                    formData.children.push({
+                        id: childId,
+                        name: childName,
+                        tshirtSize: childTshirt
+                    });
+                });
+
+                // Store in sessionStorage or localStorage for next page
+                sessionStorage.setItem('registrationData', JSON.stringify(formData));
+
+                // Log for demonstration purposes
+                console.log('Registration Data:', formData);
+
+                // Navigate to next page
                 window.location.href = 'step3-payment.html';
             }
         });
@@ -570,6 +887,13 @@
         // Prevent form submission on enter
         form.addEventListener('submit', function(e) {
             e.preventDefault();
+        });
+
+        // Handle Enter key in child name inputs
+        document.addEventListener('keypress', function(e) {
+            if (e.target.classList.contains('child-name-input') && e.key === 'Enter') {
+                e.preventDefault();
+            }
         });
     </script>
     
